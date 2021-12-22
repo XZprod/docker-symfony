@@ -1,0 +1,32 @@
+version: "3"
+services: 
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports: 
+      - "8080:80"
+    volumes: 
+      - ../src:/srv/app
+  app:
+    build: ./php
+    container_name: app
+    # ports: 
+      # - "9000:9000"
+      # - "9003:9003"
+    volumes: 
+      - ../src:/srv/app
+    expose: 
+      - 9003
+  db:
+    build: ./postgres
+    container_name: postgres_db
+    ports: 
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: 123123
+      POSTGRES_USER: xzprod
+      POSTGRES_DB: db
+    volumes: 
+      - db_data:/var/lib/postgresql/data
+volumes:
+  db_data:
